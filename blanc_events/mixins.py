@@ -92,8 +92,13 @@ class EventsMixin(MonthArchiveView):
             for i in week:
                 month_days[i] = []
         
-        # Calendar events as well
-        for i in self.model.objects.filter(start__gte=current_month, start__lte=next_month):
+        qs = self.model.objects.filter(
+            start__gte=current_month, start__lte=next_month, published=True
+        ).exclude(
+            current_version=None
+        )
+
+        for i in qs:
             event_date = i.start.date()
             month_days[event_date].append(i)
         
@@ -102,7 +107,11 @@ class EventsMixin(MonthArchiveView):
     def get_month_total_events_no(self):
         current_month = self.get_current_month()
         next_month = self.get_next_month(current_month)
-        return Event.objects.filter(start__gte=current_month, start__lte=next_month).count()
+        return Event.objects.filter(
+            start__gte=current_month, start__lte=next_month, published=True
+        ).exclude(
+            current_version=None
+        ).count()
 
     def get_calendar_day_names(self):
         calendar_days = []

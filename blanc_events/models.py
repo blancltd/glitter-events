@@ -30,10 +30,7 @@ class Event(models.Model):
     image = AssetForeignKey('assets.Image', null=True, blank=True)
     image_height = models.PositiveIntegerField(editable=False, null=True)
     image_width = models.PositiveIntegerField(editable=False, null=True)
-    summary = models.CharField(
-        max_length=100,
-        help_text='A short sentence description of the event.'
-    )
+    summary = models.TextField(help_text='A short sentence description of the event.')
     start = models.DateTimeField(help_text='Start time/date.')
     end = models.DateTimeField(help_text='End time/date.')
     final_date = models.DateTimeField(editable=False, null=True, db_index=True)
@@ -43,6 +40,8 @@ class Event(models.Model):
         help_text='Post will be hidden unless this option is selected'
     )
     current_version = models.ForeignKey('glitter.Version', blank=True, null=True, editable=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
     class Meta:
         ordering = ('start',)

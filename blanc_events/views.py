@@ -25,17 +25,24 @@ class EventDetailView(BlancPageDetailMixin, DetailView):
         return context
 
 
-class CategoryEventListView(EventsMixin, ListView):
-    template_name_suffix = '_list'
+class CategoryEventListView(ListView):
+    template_name_suffix = '_category_list'
     model = Event
+    paginate_by = 1
 
     def get_queryset(self):
         self.category = get_object_or_404(Category, slug=self.kwargs['slug'])
-        return self.model.objects.filter(final_date__gte=timezone.now(), category=self.category)
+        return self.model.objects.filter(
+            final_date__gte=timezone.now(), category=self.category, published=True
+        ).exclude(
+            current_version=None
+        )
 
     def get_context_data(self, **kwargs):
         context = super(CategoryEventListView, self).get_context_data(**kwargs)
         context['current_category'] = self.category
+        context['events_categories'] = True
+        context['categories'] = Category.objects.all()
         return context
 
 

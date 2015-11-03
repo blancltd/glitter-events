@@ -32,6 +32,7 @@ class EventAdmin(BlancPageAdminMixin, admin.ModelAdmin):
     date_hierarchy = 'start'
     list_display = ('title', 'start', 'end', 'category', 'published')
     list_filter = ('published', 'start', 'category')
+    readonly_fields = ('published',)
     prepopulated_fields = {
         'slug': ('title',)
     }

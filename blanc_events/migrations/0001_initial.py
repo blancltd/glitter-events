@@ -33,7 +33,7 @@ class Migration(migrations.Migration):
                 ('slug', models.SlugField(unique=True, max_length=100)),
                 ('image_height', models.PositiveIntegerField(null=True, editable=False)),
                 ('image_width', models.PositiveIntegerField(null=True, editable=False)),
-                ('summary', models.CharField(help_text=b'A short sentence description of the event.', max_length=100)),
+                ('summary', models.TextField(help_text=b'A short sentence description of the event.')),
                 ('start', models.DateTimeField(help_text=b'Start time/date.')),
                 ('end', models.DateTimeField(help_text=b'End time/date.')),
                 ('final_date', models.DateTimeField(null=True, editable=False, db_index=True)),
