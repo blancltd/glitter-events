@@ -9,21 +9,15 @@ from .mixins import EventsMixin
 from .models import Event, Category
 
 
-class EventListView(EventsMixin, ListView):
+class EventListView(EventsMixin):
     model = Event
-
-    def get_queryset(self):
-        return self.model.objects.filter(start__gte=self.now.replace(day=1))
 
     def get_context_data(self, **kwargs):
         context = super(EventListView, self).get_context_data(**kwargs)
 
         context['total_events'] = self.get_month_total_events_no()
-        context['current_month'] = self.now
-        context['previous_month'] = self.previous_month
-        context['next_month'] = self.next_month
-        context['month'] = self.now
         context['calendar_headings'] = self.get_calendar_day_names()
+        context['current_month'] = self.get_current_month()
         return context
 
 
@@ -40,8 +34,14 @@ class CategoryEventListView(EventsMixin, ListView):
         return context
 
 
-class CalendarMonthArchiveView(MonthArchiveView):
+class CalendarMonthArchiveView(EventsMixin, MonthArchiveView):
     queryset = Event.objects.all()
     date_field = 'start'
     allow_empty = True
 
+    def get_context_data(self, **kwargs):
+        context = super(CalendarMonthArchiveView, self).get_context_data(**kwargs)
+        context['current_month'] = self.get_current_month()
+        return context
+
+    
