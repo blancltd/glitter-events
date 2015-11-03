@@ -2,6 +2,8 @@
 
 from django.contrib import admin
 
+from blanc_pages.admin import BlancPageAdminMixin
+
 from .models import Category, Event
 
 
@@ -14,7 +16,7 @@ class CategoryAdmin(admin.ModelAdmin):
 
 
 @admin.register(Event)
-class EventAdmin(admin.ModelAdmin):
+class EventAdmin(BlancPageAdminMixin, admin.ModelAdmin):
     prepopulated_fields = {
         'slug': ('title',)
     }

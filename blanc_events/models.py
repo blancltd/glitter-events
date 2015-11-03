@@ -39,9 +39,20 @@ class Event(models.Model):
     start = models.DateTimeField(help_text='Start time/date.')
     end = models.DateTimeField(help_text='End time/date.')
     final_date = models.DateTimeField(editable=False, null=True, db_index=True)
+    published = models.BooleanField(
+        default=True,
+        db_index=True,
+        help_text='Post will be hidden unless this option is selected'
+    )
+    current_version = models.ForeignKey('glitter.Version', blank=True, null=True, editable=False)
 
     class Meta:
         ordering = ('start',)
+        permissions = (
+            ('edit_page', 'Can edit page'),
+            ('publish_page', 'Can publish page'),
+            ('view_protected_page', 'Can view protected page'),
+        )
 
     def __unicode__(self):
         return self.title
@@ -54,6 +65,9 @@ class Event(models.Model):
     @models.permalink
     def get_absolute_url(self):
         return ('blanc-events:detail', (), {
+            'year': self.start.year,
+            'month': str(self.start.month).zfill(2),
+            'day': str(self.start.day).zfill(2),
             'slug': self.slug,
         })
 
