@@ -6,7 +6,6 @@ from collections import OrderedDict
 
 from django.utils import timezone
 from django.views.generic.dates import MonthArchiveView
-from django.http import Http404
 
 from .models import Category, Event
 
@@ -63,17 +62,23 @@ class EventsMixin(MonthArchiveView):
 
     def get_context_data(self, **kwargs):
         context = super(EventsMixin, self).get_context_data(**kwargs)
+
         current_month = self.get_current_month()
         now = self.get_time_now()
         current_month = self.get_current_month()
         previous_month = self.get_previous_month(current_month)
         next_month = self.get_next_month(current_month)
+
         context['events_categories'] = self.events_categories
+        context['calendar_headings'] = self.get_calendar_day_names()
         context['categories'] = Category.objects.all()
         context['event_list'] = self.get_events_list()
         context['now_month'] = now
         context['previous_month'] = previous_month
         context['next_month'] = next_month
+        context['current_month'] = current_month
+        context['total_events'] = self.get_month_total_events_no()
+
         return context
 
     def get_events_list(self):
@@ -95,9 +100,9 @@ class EventsMixin(MonthArchiveView):
         return month_days.items()
 
     def get_month_total_events_no(self):
-        now = self.get_time_now()
-        next_month = self.get_next_month(now)
-        return Event.objects.filter(start__gte=now, start__lte=next_month).count()
+        current_month = self.get_current_month()
+        next_month = self.get_next_month(current_month)
+        return Event.objects.filter(start__gte=current_month, start__lte=next_month).count()
 
     def get_calendar_day_names(self):
         calendar_days = []
