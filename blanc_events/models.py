@@ -34,8 +34,6 @@ class Event(models.Model):
         max_length=100,
         help_text='A short sentence description of the event.'
     )
-    description = models.TextField(help_text='All of the event details we have.')
-
     start = models.DateTimeField(help_text='Start time/date.')
     end = models.DateTimeField(help_text='End time/date.')
     final_date = models.DateTimeField(editable=False, null=True, db_index=True)
