@@ -1,10 +1,13 @@
 # -*- coding: utf-8 -*-
 
 from django.db import models
+from django.utils.encoding import python_2_unicode_compatible
+from django.core.urlresolvers import reverse
 
 from blanc_basic_assets.fields import AssetForeignKey
 
 
+@python_2_unicode_compatible
 class Category(models.Model):
     title = models.CharField(max_length=100, db_index=True)
     slug = models.SlugField(max_length=100, unique=True)
@@ -13,16 +16,14 @@ class Category(models.Model):
         ordering = ('title',)
         verbose_name_plural = 'Categories'
 
-    def __unicode__(self):
+    def __str__(self):
         return self.title
 
-    @models.permalink
     def get_absolute_url(self):
-        return ('blanc-events:category-event-list', (), {
-            'slug': self.slug,
-        })
+        return reverse('blanc-events:category-event-list', args=[self.slug])
 
 
+@python_2_unicode_compatible
 class Event(models.Model):
     category = models.ForeignKey('blanc_events.Category')
     title = models.CharField(max_length=100, db_index=True)
@@ -51,7 +52,7 @@ class Event(models.Model):
             ('view_protected_page', 'Can view protected page'),
         )
 
-    def __unicode__(self):
+    def __str__(self):
         return self.title
 
     def save(self, *args, **kwargs):
@@ -59,9 +60,8 @@ class Event(models.Model):
         self.final_date = self.end
         super(Event, self).save(*args, **kwargs)
 
-    @models.permalink
     def get_absolute_url(self):
-        return ('blanc-events:detail', (), {
+        return reverse('blanc-events:detail', kwargs={
             'year': self.start.year,
             'month': str(self.start.month).zfill(2),
             'day': str(self.start.day).zfill(2),
