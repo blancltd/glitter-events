@@ -10,11 +10,22 @@ from django.views.generic.dates import MonthArchiveView
 from .models import Category, Event
 
 
-class EventsMixin(MonthArchiveView):
+class EventsQuerysetMixin(object):
+    model = Event
+
+    def get_queryset(self):
+        now = timezone.now()
+        return self.model.objects.filter(
+            final_date__gte=now, published=True
+        ).exclude(
+            current_version=None
+        )
+
+
+class EventsMixin(EventsQuerysetMixin, MonthArchiveView):
     events_categories = True
     allow_future = True
     allow_empty = True
-    model = Event
     year_format = '%Y'
     month_format = '%m'
     date_field = 'start'
@@ -92,11 +103,10 @@ class EventsMixin(MonthArchiveView):
             for i in week:
                 month_days[i] = []
         
-        qs = self.model.objects.filter(
-            start__gte=current_month, start__lte=next_month, published=True
-        ).exclude(
-            current_version=None
-        )
+        # Get queryset from Mixin
+        qs = self.get_queryset()
+
+        qs = qs.filter(start__gte=current_month, start__lte=next_month)
 
         for i in qs:
             event_date = i.start.date()
@@ -107,11 +117,10 @@ class EventsMixin(MonthArchiveView):
     def get_month_total_events_no(self):
         current_month = self.get_current_month()
         next_month = self.get_next_month(current_month)
-        return Event.objects.filter(
-            start__gte=current_month, start__lte=next_month, published=True
-        ).exclude(
-            current_version=None
-        ).count()
+
+        # QuerySet from mixin
+        qs = self.get_queryset()
+        return qs.filter(start__gte=current_month, start__lte=next_month).count()
 
     def get_calendar_day_names(self):
         calendar_days = []

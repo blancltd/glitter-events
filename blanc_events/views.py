@@ -6,7 +6,7 @@ from django.views.generic import ListView, DetailView
 
 from blanc_pages.mixins import BlancPageDetailMixin
 
-from .mixins import EventsMixin
+from .mixins import EventsMixin, EventsQuerysetMixin
 from .models import Event, Category
 
 
@@ -25,18 +25,14 @@ class EventDetailView(BlancPageDetailMixin, DetailView):
         return context
 
 
-class CategoryEventListView(ListView):
+class CategoryEventListView(EventsQuerysetMixin, ListView):
     template_name_suffix = '_category_list'
-    model = Event
     paginate_by = 1
 
     def get_queryset(self):
+        qs = super(CategoryEventListView, self).get_queryset()
         self.category = get_object_or_404(Category, slug=self.kwargs['slug'])
-        return self.model.objects.filter(
-            final_date__gte=timezone.now(), category=self.category, published=True
-        ).exclude(
-            current_version=None
-        )
+        return qs.filter(category=self.category)
 
     def get_context_data(self, **kwargs):
         context = super(CategoryEventListView, self).get_context_data(**kwargs)
