@@ -34,7 +34,7 @@ class Event(models.Model):
     summary = models.TextField(help_text='A short sentence description of the event.')
     start = models.DateTimeField(help_text='Start time/date.')
     end = models.DateTimeField(help_text='End time/date.')
-    final_date = models.DateTimeField(editable=False, null=True, db_index=True)
+    date_url = models.DateField(db_index=True, editable=False)
     published = models.BooleanField(
         default=True,
         db_index=True,
@@ -56,15 +56,14 @@ class Event(models.Model):
         return self.title
 
     def save(self, *args, **kwargs):
-        # Set final date to the end, for one off events
-        self.final_date = self.end
+        self.date_url = self.start.date()
         super(Event, self).save(*args, **kwargs)
 
     def get_absolute_url(self):
         return reverse('blanc-events:detail', kwargs={
-            'year': self.start.year,
-            'month': str(self.start.month).zfill(2),
-            'day': str(self.start.day).zfill(2),
+            'year': self.date_url.year,
+            'month': str(self.date_url.month).zfill(2),
+            'day': str(self.date_url.day).zfill(2),
             'slug': self.slug,
         })
 

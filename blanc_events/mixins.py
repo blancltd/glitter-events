@@ -16,7 +16,7 @@ class EventsQuerysetMixin(object):
     def get_queryset(self):
         now = timezone.now()
         return self.model.objects.filter(
-            final_date__gte=now, published=True
+            end__gte=now, published=True
         ).exclude(
             current_version=None
         )
@@ -28,7 +28,7 @@ class EventsMixin(EventsQuerysetMixin, MonthArchiveView):
     allow_empty = True
     year_format = '%Y'
     month_format = '%m'
-    date_field = 'start'
+    date_field = 'date_url'
 
     def get_year(self):
         """
