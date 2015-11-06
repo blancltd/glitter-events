@@ -2,10 +2,13 @@
 from __future__ import unicode_literals
 
 from django.db import models
+from django.utils.encoding import python_2_unicode_compatible
+from django.core.urlresolvers import reverse
 
 from blanc_basic_assets.fields import AssetForeignKey
 
 
+@python_2_unicode_compatible
 class Category(models.Model):
     title = models.CharField(max_length=100, db_index=True)
     slug = models.SlugField(max_length=100, unique=True)
@@ -14,16 +17,14 @@ class Category(models.Model):
         ordering = ('title',)
         verbose_name_plural = 'Categories'
 
-    def __unicode__(self):
+    def __str__(self):
         return self.title
 
-    @models.permalink
     def get_absolute_url(self):
-        return ('blanc-events:category-event-list', (), {
-            'slug': self.slug,
-        })
+        return reverse('blanc-events:category-event-list', args=[self.slug])
 
 
+@python_2_unicode_compatible
 class Event(models.Model):
     category = models.ForeignKey('blanc_events.Category')
     title = models.CharField(max_length=100, db_index=True)
@@ -34,7 +35,7 @@ class Event(models.Model):
     summary = models.TextField(help_text='A short sentence description of the event.')
     start = models.DateTimeField(help_text='Start time/date.')
     end = models.DateTimeField(help_text='End time/date.')
-    final_date = models.DateTimeField(editable=False, null=True, db_index=True)
+    date_url = models.DateField(db_index=True, editable=False)
     published = models.BooleanField(
         default=True,
         db_index=True,
@@ -52,20 +53,18 @@ class Event(models.Model):
             ('view_protected_page', 'Can view protected page'),
         )
 
-    def __unicode__(self):
+    def __str__(self):
         return self.title
 
     def save(self, *args, **kwargs):
-        # Set final date to the end, for one off events
-        self.final_date = self.end
+        self.date_url = self.start.date()
         super(Event, self).save(*args, **kwargs)
 
-    @models.permalink
     def get_absolute_url(self):
-        return ('blanc-events:detail', (), {
-            'year': self.start.year,
-            'month': str(self.start.month).zfill(2),
-            'day': str(self.start.day).zfill(2),
+        return reverse('blanc-events:detail', kwargs={
+            'year': self.date_url.year,
+            'month': str(self.date_url.month).zfill(2),
+            'day': str(self.date_url.day).zfill(2),
             'slug': self.slug,
         })
 
