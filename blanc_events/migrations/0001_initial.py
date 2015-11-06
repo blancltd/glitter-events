@@ -36,7 +36,6 @@ class Migration(migrations.Migration):
                 ('summary', models.TextField(help_text='A short sentence description of the event.')),
                 ('start', models.DateTimeField(help_text='Start time/date.')),
                 ('end', models.DateTimeField(help_text='End time/date.')),
-                ('final_date', models.DateTimeField(null=True, editable=False, db_index=True)),
                 ('published', models.BooleanField(default=True, help_text='Post will be hidden unless this option is selected', db_index=True)),
                 ('date_url', models.DateField(editable=False, db_index=True)),
                 ('created_at', models.DateTimeField(auto_now_add=True)),
