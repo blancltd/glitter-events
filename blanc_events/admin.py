@@ -22,7 +22,7 @@ class EventAdmin(BlancPageAdminMixin, admin.ModelAdmin):
     fieldsets = (
         ('Event', {
             'fields': (
-                'title', 'category', 'image', 'summary', 'start', 'end'
+                'title', 'category', 'location', 'image', 'summary', 'start', 'end'
             )
         }),
         ('Advanced options', {
@@ -35,12 +35,10 @@ class EventAdmin(BlancPageAdminMixin, admin.ModelAdmin):
     prepopulated_fields = {
         'slug': ('title',)
     }
-    
+
     def admin_url(self, obj):
-            info = self.model._meta.app_label, self.model._meta.model_name
-            redirect_url = reverse('admin:%s_%s_redirect' % info, kwargs={'object_id': obj.id})
-            return '<a href="%s">%s</a>' % (redirect_url, 'URL')
+        info = self.model._meta.app_label, self.model._meta.model_name
+        redirect_url = reverse('admin:%s_%s_redirect' % info, kwargs={'object_id': obj.id})
+        return '<a href="%s">%s</a>' % (redirect_url, 'URL')
     admin_url.short_description = 'URL'
     admin_url.allow_tags = True
-    
-    
