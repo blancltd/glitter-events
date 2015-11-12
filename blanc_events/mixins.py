@@ -12,14 +12,7 @@ from .models import Category, Event
 
 class EventsQuerysetMixin(object):
     model = Event
-
-    def get_queryset(self):
-        now = timezone.now()
-        return self.model.objects.filter(
-            end__gte=now, published=True
-        ).exclude(
-            current_version=None
-        )
+    queryset = Event.objects.published()
 
 
 class EventsMixin(EventsQuerysetMixin, MonthArchiveView):
@@ -131,4 +124,3 @@ class EventsMixin(EventsQuerysetMixin, MonthArchiveView):
             calendar_days.append(day_names[i])
 
         return calendar_days
-

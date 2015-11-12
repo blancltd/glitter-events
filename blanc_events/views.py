@@ -43,6 +43,3 @@ class CategoryEventListView(EventsQuerysetMixin, ListView):
 
 class CalendarMonthArchiveView(EventsMixin):
     pass
-
-    
-
