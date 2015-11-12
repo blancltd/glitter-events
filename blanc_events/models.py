@@ -39,7 +39,7 @@ class Event(GlitterMixin):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
-    class Meta:
+    class Meta(GlitterMixin.Meta):
         ordering = ('start',)
 
     def __str__(self):
