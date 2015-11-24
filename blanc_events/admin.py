@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 
 from django.contrib import admin
-from django.core.urlresolvers import reverse
 
 from blanc_pages.admin import BlancPageAdminMixin
 
@@ -35,10 +34,3 @@ class EventAdmin(BlancPageAdminMixin, admin.ModelAdmin):
     prepopulated_fields = {
         'slug': ('title',)
     }
-
-    def admin_url(self, obj):
-        info = self.model._meta.app_label, self.model._meta.model_name
-        redirect_url = reverse('admin:%s_%s_redirect' % info, kwargs={'object_id': obj.id})
-        return '<a href="%s">%s</a>' % (redirect_url, 'URL')
-    admin_url.short_description = 'URL'
-    admin_url.allow_tags = True
