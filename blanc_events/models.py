@@ -5,8 +5,9 @@ from django.db import models
 from django.utils.encoding import python_2_unicode_compatible
 from django.core.urlresolvers import reverse
 
-from blanc_pages.mixins import GlitterMixin
 from blanc_pages.assets.fields import AssetForeignKey
+from blanc_pages.mixins import GlitterMixin
+from blanc_pages.models import BaseBlock
 
 
 @python_2_unicode_compatible
@@ -56,3 +57,10 @@ class Event(GlitterMixin):
             'day': str(self.date_url.day).zfill(2),
             'slug': self.slug,
         })
+
+
+class UpcomingEventsBlock(BaseBlock):
+    category = models.ForeignKey('blanc_events.Category', null=True, blank=True)
+
+    class Meta:
+        verbose_name = 'upcoming events'

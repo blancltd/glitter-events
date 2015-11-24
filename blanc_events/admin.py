@@ -2,9 +2,10 @@
 
 from django.contrib import admin
 
+from blanc_pages import block_admin
 from blanc_pages.admin import BlancPageAdminMixin
 
-from .models import Category, Event
+from .models import Category, Event, UpcomingEventsBlock
 
 
 @admin.register(Category)
@@ -33,3 +34,7 @@ class EventAdmin(BlancPageAdminMixin, admin.ModelAdmin):
     prepopulated_fields = {
         'slug': ('title',)
     }
+
+
+block_admin.site.register(UpcomingEventsBlock)
+block_admin.site.register_block(UpcomingEventsBlock, 'Events')
