@@ -17,7 +17,6 @@ class CategoryAdmin(admin.ModelAdmin):
 
 @admin.register(Event)
 class EventAdmin(BlancPageAdminMixin, admin.ModelAdmin):
-    pass
     fieldsets = (
         ('Event', {
             'fields': (
@@ -30,7 +29,7 @@ class EventAdmin(BlancPageAdminMixin, admin.ModelAdmin):
     )
     date_hierarchy = 'start'
     list_display = ('title', 'start', 'end', 'category',)
-    list_filter = ('published', 'start', 'category__title',)
+    list_filter = ('published', 'start', 'category',)
     prepopulated_fields = {
         'slug': ('title',)
     }
