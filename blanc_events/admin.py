@@ -37,4 +37,4 @@ class EventAdmin(BlancPageAdminMixin, admin.ModelAdmin):
 
 
 block_admin.site.register(UpcomingEventsBlock)
-block_admin.site.register_block(UpcomingEventsBlock, 'Events')
+block_admin.site.register_block(UpcomingEventsBlock, 'App Blocks')
