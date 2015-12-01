@@ -26,7 +26,7 @@ class EventDetailView(BlancPageDetailMixin, DetailView):
 
 class CategoryEventListView(EventsQuerysetMixin, ListView):
     template_name_suffix = '_category_list'
-    paginate_by = 1
+    paginate_by = 10
 
     def get_queryset(self):
         qs = super(CategoryEventListView, self).get_queryset()
