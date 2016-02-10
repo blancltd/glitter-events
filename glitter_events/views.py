@@ -3,7 +3,7 @@
 from django.shortcuts import get_object_or_404
 from django.views.generic import ListView, DetailView
 
-from blanc_pages.mixins import BlancPageDetailMixin
+from glitter.mixins import GlitterDetailMixin
 
 from .mixins import EventsMixin, EventsQuerysetMixin
 from .models import Event, Category
@@ -13,7 +13,7 @@ class EventListView(EventsMixin):
     pass
 
 
-class EventDetailView(BlancPageDetailMixin, DetailView):
+class EventDetailView(GlitterDetailMixin, DetailView):
     model = Event
 
     def get_context_data(self, **kwargs):

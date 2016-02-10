@@ -5,9 +5,9 @@ from django.db import models
 from django.utils.encoding import python_2_unicode_compatible
 from django.core.urlresolvers import reverse
 
-from blanc_pages.assets.fields import AssetForeignKey
-from blanc_pages.mixins import GlitterMixin
-from blanc_pages.models import BaseBlock
+from glitter.assets.fields import AssetForeignKey
+from glitter.mixins import GlitterMixin
+from glitter.models import BaseBlock
 
 
 @python_2_unicode_compatible
@@ -23,7 +23,7 @@ class Category(models.Model):
         return self.title
 
     def get_absolute_url(self):
-        return reverse('blanc-events:category-event-list', args=[self.slug])
+        return reverse('glitter-events:category-event-list', args=[self.slug])
 
 
 @python_2_unicode_compatible
@@ -51,7 +51,7 @@ class Event(GlitterMixin):
         super(Event, self).save(*args, **kwargs)
 
     def get_absolute_url(self):
-        return reverse('blanc-events:detail', kwargs={
+        return reverse('glitter-events:detail', kwargs={
             'year': self.date_url.year,
             'month': str(self.date_url.month).zfill(2),
             'day': str(self.date_url.day).zfill(2),
@@ -60,7 +60,7 @@ class Event(GlitterMixin):
 
 
 class UpcomingEventsBlock(BaseBlock):
-    category = models.ForeignKey('blanc_events.Category', null=True, blank=True)
+    category = models.ForeignKey('glitter_events.Category', null=True, blank=True)
 
     class Meta:
         verbose_name = 'upcoming events'

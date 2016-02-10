@@ -1,2 +1,2 @@
-Blanc Events
-============
+Glitter Events
+==============

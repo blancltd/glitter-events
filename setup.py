@@ -2,17 +2,14 @@
 from setuptools import setup, find_packages
 
 setup(
-    name='blanc-events',
+    name='glitter-events',
     version='0.1',
-    description='Blanc Events for Django',
+    description='Glitter Events for Django',
     long_description=open('README.rst').read(),
-    url='https://github.com/blancltd/blanc-event',
+    url='https://github.com/blancltd/glitter-events',
     maintainer='Blanc Ltd',
     maintainer_email='studio@blanc.ltd.uk',
     platforms=['any'],
-    install_requires=[
-        'blanc-basic-assets>=0.3',
-    ],
     packages=find_packages(),
     classifiers=[
         'Environment :: Web Environment',

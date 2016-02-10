@@ -2,8 +2,8 @@
 
 from django.contrib import admin
 
-from blanc_pages import block_admin
-from blanc_pages.admin import BlancPageAdminMixin
+from glitter import block_admin
+from glitter.admin import GlitterAdminMixin
 
 from .models import Category, Event, UpcomingEventsBlock
 
@@ -17,7 +17,7 @@ class CategoryAdmin(admin.ModelAdmin):
 
 
 @admin.register(Event)
-class EventAdmin(BlancPageAdminMixin, admin.ModelAdmin):
+class EventAdmin(GlitterAdminMixin, admin.ModelAdmin):
     fieldsets = (
         ('Event', {
             'fields': (
