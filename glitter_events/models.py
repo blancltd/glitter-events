@@ -28,7 +28,7 @@ class Category(models.Model):
 
 @python_2_unicode_compatible
 class Event(GlitterMixin):
-    category = models.ForeignKey('blanc_events.Category')
+    category = models.ForeignKey('glitter_events.Category')
     title = models.CharField(max_length=100, db_index=True)
     slug = models.SlugField(max_length=100, unique=True)
     location = models.CharField(max_length=128, blank=True)
