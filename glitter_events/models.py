@@ -32,7 +32,7 @@ class Event(GlitterMixin):
     title = models.CharField(max_length=100, db_index=True)
     slug = models.SlugField(max_length=100, unique=True)
     location = models.CharField(max_length=128, blank=True)
-    image = AssetForeignKey('assets.Image', null=True, blank=True)
+    image = AssetForeignKey('glitter_assets.Image', null=True, blank=True)
     summary = models.TextField(help_text='A short sentence description of the event.')
     start = models.DateTimeField(help_text='Start time/date.')
     end = models.DateTimeField(help_text='End time/date.')
