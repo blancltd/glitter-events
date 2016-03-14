@@ -30,36 +30,6 @@ class CalendarMixin(EventsQuerysetMixin, MonthArchiveView):
     month_format = '%m'
     date_field = 'date_url'
 
-    def get_year(self):
-        """
-        Return the year for which this view should display data.
-        """
-        year = self.year
-        if year is None:
-            try:
-                year = self.kwargs['year']
-            except KeyError:
-                try:
-                    year = self.request.GET['year']
-                except KeyError:
-                    year = str(self.get_time_now().year)
-        return year
-
-    def get_month(self):
-        """
-        Return the month for which this view should display data.
-        """
-        month = self.month
-        if month is None:
-            try:
-                month = self.kwargs['month']
-            except KeyError:
-                try:
-                    month = self.request.GET['month']
-                except KeyError:
-                    month = str(self.get_time_now().month)
-        return month
-
     def get_time_now(self):
         return timezone.now()
 

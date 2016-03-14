@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from django.shortcuts import get_object_or_404
+from django.utils import timezone
 from django.views.generic import ListView, DetailView
 
 from glitter.mixins import GlitterDetailMixin
@@ -34,7 +35,11 @@ class CategoryEventListView(EventsQuerysetMixin, EventsMixin, ListView):
 
 
 class CalendarCurrentMonthView(CalendarMixin, EventsMixin):
-    pass
+    def get_year(self):
+        return str(timezone.now().year)
+
+    def get_month(self):
+        return str(timezone.now().month)
 
 
 class CalendarMonthArchiveView(CalendarMixin, EventsMixin):
