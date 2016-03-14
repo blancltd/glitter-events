@@ -10,13 +10,20 @@ from django.views.generic.dates import MonthArchiveView
 from .models import Category, Event
 
 
+class EventsMixin(object):
+    def get_context_data(self, **kwargs):
+        context = super(EventsMixin, self).get_context_data(**kwargs)
+        context['events_categories'] = True
+        context['categories'] = Category.objects.all()
+        return context
+
+
 class EventsQuerysetMixin(object):
     model = Event
     queryset = Event.objects.published()
 
 
 class CalendarMixin(EventsQuerysetMixin, MonthArchiveView):
-    events_categories = True
     allow_future = True
     allow_empty = True
     year_format = '%Y'
@@ -73,9 +80,7 @@ class CalendarMixin(EventsQuerysetMixin, MonthArchiveView):
         previous_month = self.get_previous_month(current_month)
         next_month = self.get_next_month(current_month)
 
-        context['events_categories'] = self.events_categories
         context['calendar_headings'] = self.get_calendar_day_names()
-        context['categories'] = Category.objects.all()
         context['event_list'] = self.get_events_list()
         context['now_month'] = now
         context['previous_month'] = previous_month

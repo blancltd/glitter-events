@@ -5,22 +5,20 @@ from django.views.generic import ListView, DetailView
 
 from glitter.mixins import GlitterDetailMixin
 
-from .mixins import EventsMixin, EventsQuerysetMixin
-from .models import Event, Category
+from .mixins import CalendarMixin, EventsMixin, EventsQuerysetMixin
+from .models import Category, Event
 
 
-class EventDetailView(GlitterDetailMixin, DetailView):
+class EventDetailView(GlitterDetailMixin, EventsMixin, DetailView):
     model = Event
 
     def get_context_data(self, **kwargs):
         context = super(EventDetailView, self).get_context_data(**kwargs)
-        context['categories'] = Category.objects.all()
         context['current_category'] = self.object.category
-        context['events_categories'] = True
         return context
 
 
-class CategoryEventListView(EventsQuerysetMixin, ListView):
+class CategoryEventListView(EventsQuerysetMixin, EventsMixin, ListView):
     template_name_suffix = '_category_list'
     paginate_by = 10
 
@@ -32,8 +30,6 @@ class CategoryEventListView(EventsQuerysetMixin, ListView):
     def get_context_data(self, **kwargs):
         context = super(CategoryEventListView, self).get_context_data(**kwargs)
         context['current_category'] = self.category
-        context['events_categories'] = True
-        context['categories'] = Category.objects.all()
         return context
 
 
