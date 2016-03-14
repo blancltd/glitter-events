@@ -18,6 +18,13 @@ class EventsMixin(object):
         return context
 
 
+class CategoryMixin(object):
+    def get_context_data(self, **kwargs):
+        context = super(CategoryMixin, self).get_context_data(**kwargs)
+        context['current_category'] = self.category
+        return context
+
+
 class EventsQuerysetMixin(object):
     model = Event
     queryset = Event.objects.published()
