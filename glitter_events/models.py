@@ -32,7 +32,7 @@ class Category(models.Model):
 class Event(GlitterMixin):
     category = models.ForeignKey('glitter_events.Category')
     title = models.CharField(max_length=100, db_index=True)
-    slug = models.SlugField(max_length=100, unique=True)
+    slug = models.SlugField(max_length=100, unique_for_date='start')
     location = models.CharField(max_length=128, blank=True)
     image = AssetForeignKey('glitter_assets.Image', null=True, blank=True)
     summary = models.TextField(help_text='A short sentence description of the event.')

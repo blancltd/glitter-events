@@ -4,8 +4,8 @@ from datetime import date
 
 from django.shortcuts import get_object_or_404
 from django.utils import timezone
-from django.views.generic import DetailView, ListView
-from django.views.generic.dates import MonthArchiveView
+from django.views.generic import ListView
+from django.views.generic.dates import DateDetailView, MonthArchiveView
 
 from glitter.mixins import GlitterDetailMixin
 
@@ -13,8 +13,11 @@ from .mixins import CalendarMixin, CategoryMixin, EventsMixin, EventsQuerysetMix
 from .models import Category, Event
 
 
-class EventDetailView(GlitterDetailMixin, EventsMixin, DetailView):
+class EventDetailView(GlitterDetailMixin, EventsMixin, DateDetailView):
     model = Event
+    month_format = '%m'
+    date_field = 'date_url'
+    allow_future = True
 
     def get_context_data(self, **kwargs):
         context = super(EventDetailView, self).get_context_data(**kwargs)

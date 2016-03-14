@@ -32,7 +32,6 @@ class EventsQuerysetMixin(object):
 class CalendarMixin(EventsQuerysetMixin):
     allow_future = True
     allow_empty = True
-    year_format = '%Y'
     month_format = '%m'
     date_field = 'date_url'
 
