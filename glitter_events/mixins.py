@@ -34,17 +34,11 @@ class CalendarMixin(EventsQuerysetMixin, MonthArchiveView):
         return timezone.now()
 
     def get_current_month(self):
-        if 'month' in self.kwargs:
-            if self.get_year() and self.get_month():
-                date = datetime.date(int(self.get_year()), int(self.get_month()), 1)
-        else:
-            date = self.get_time_now().replace(day=1)
-        return date
+        return datetime.date(year=int(self.get_year()), month=int(self.get_month()), day=1)
 
     def get_context_data(self, **kwargs):
         context = super(CalendarMixin, self).get_context_data(**kwargs)
 
-        current_month = self.get_current_month()
         now = self.get_time_now()
         current_month = self.get_current_month()
         previous_month = self.get_previous_month(current_month)
