@@ -9,10 +9,6 @@ from .mixins import EventsMixin, EventsQuerysetMixin
 from .models import Event, Category
 
 
-class EventListView(EventsMixin):
-    pass
-
-
 class EventDetailView(GlitterDetailMixin, DetailView):
     model = Event
 
@@ -41,5 +37,9 @@ class CategoryEventListView(EventsQuerysetMixin, ListView):
         return context
 
 
-class CalendarMonthArchiveView(EventsMixin):
+class CalendarCurrentMonthView(CalendarMixin, EventsMixin):
+    pass
+
+
+class CalendarMonthArchiveView(CalendarMixin, EventsMixin):
     pass

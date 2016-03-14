@@ -15,7 +15,7 @@ class EventsQuerysetMixin(object):
     queryset = Event.objects.published()
 
 
-class EventsMixin(EventsQuerysetMixin, MonthArchiveView):
+class CalendarMixin(EventsQuerysetMixin, MonthArchiveView):
     events_categories = True
     allow_future = True
     allow_empty = True
@@ -65,7 +65,7 @@ class EventsMixin(EventsQuerysetMixin, MonthArchiveView):
         return date
 
     def get_context_data(self, **kwargs):
-        context = super(EventsMixin, self).get_context_data(**kwargs)
+        context = super(CalendarMixin, self).get_context_data(**kwargs)
 
         current_month = self.get_current_month()
         now = self.get_time_now()
@@ -90,12 +90,12 @@ class EventsMixin(EventsQuerysetMixin, MonthArchiveView):
         next_month = self.get_next_month(current_month)
 
         month_days = OrderedDict()
-        
+
         cal = calendar.Calendar(firstweekday=calendar.SUNDAY)
         for week in cal.monthdatescalendar(current_month.year, current_month.month):
             for i in week:
                 month_days[i] = []
-        
+
         # Get queryset from Mixin
         qs = self.get_queryset()
 
@@ -104,7 +104,7 @@ class EventsMixin(EventsQuerysetMixin, MonthArchiveView):
         for i in qs:
             event_date = i.start.date()
             month_days[event_date].append(i)
-        
+
         return month_days.items()
 
     def get_month_total_events_no(self):

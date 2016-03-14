@@ -8,8 +8,8 @@ from . import views
 urlpatterns = [
     url(
         r'^$',
-        views.EventListView.as_view(),
-        name='list'
+        views.CalendarCurrentMonthView.as_view(),
+        name='current-month'
     ),
 
     url(
@@ -25,8 +25,7 @@ urlpatterns = [
     ),
     url(
         r'^calendar/(?P<year>\d{4})/(?P<month>\d{2})/$',
-        views.CalendarMonthArchiveView.as_view(month_format='%m'),
+        views.CalendarMonthArchiveView.as_view(),
         name='calendar-month'
     ),
 ]
-
