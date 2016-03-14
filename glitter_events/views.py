@@ -4,7 +4,8 @@ from datetime import date
 
 from django.shortcuts import get_object_or_404
 from django.utils import timezone
-from django.views.generic import ListView, DetailView
+from django.views.generic import DetailView, ListView
+from django.views.generic.dates import MonthArchiveView
 
 from glitter.mixins import GlitterDetailMixin
 
@@ -21,7 +22,7 @@ class EventDetailView(GlitterDetailMixin, EventsMixin, DetailView):
         return context
 
 
-class CalendarCurrentMonthView(CalendarMixin, EventsMixin):
+class CalendarCurrentMonthView(CalendarMixin, EventsMixin, MonthArchiveView):
     def get_year(self):
         return str(timezone.now().year)
 
@@ -29,7 +30,7 @@ class CalendarCurrentMonthView(CalendarMixin, EventsMixin):
         return str(timezone.now().month)
 
 
-class CalendarMonthArchiveView(CalendarMixin, EventsMixin):
+class CalendarMonthArchiveView(CalendarMixin, EventsMixin, MonthArchiveView):
     pass
 
 

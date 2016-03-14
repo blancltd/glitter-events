@@ -5,7 +5,6 @@ import datetime
 from collections import OrderedDict
 
 from django.utils import timezone
-from django.views.generic.dates import MonthArchiveView
 
 from .models import Category, Event
 
@@ -30,7 +29,7 @@ class EventsQuerysetMixin(object):
     queryset = Event.objects.published()
 
 
-class CalendarMixin(EventsQuerysetMixin, MonthArchiveView):
+class CalendarMixin(EventsQuerysetMixin):
     allow_future = True
     allow_empty = True
     year_format = '%Y'
