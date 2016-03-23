@@ -37,16 +37,17 @@ class CalendarMonthArchiveView(CalendarMixin, EventsMixin, MonthArchiveView):
     pass
 
 
-class EventListView(EventsQuerysetMixin, ListView):
+class BaseEventListView(EventsQuerysetMixin, EventsMixin, ListView):
     paginate_by = 10
 
+
+class EventListView(BaseEventListView):
     def get_queryset(self):
         qs = super(EventListView, self).get_queryset()
         return qs.filter(start__gte=date.today())
 
 
-class EventListArchiveView(EventsQuerysetMixin, ListView):
-    paginate_by = 10
+class EventListArchiveView(BaseEventListView):
     template_name_suffix = '_list_archive'
 
     def get_queryset(self):
