@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from datetime import date
+import datetime
 
 from django.shortcuts import get_object_or_404
 from django.utils import timezone
@@ -44,7 +44,9 @@ class BaseEventListView(EventsQuerysetMixin, EventsMixin, ListView):
 class EventListView(BaseEventListView):
     def get_queryset(self):
         qs = super(EventListView, self).get_queryset()
-        return qs.filter(start__gte=date.today())
+        today = datetime.datetime.combine(date=datetime.date.today(), time=datetime.time.min)
+        today = timezone.make_aware(today)
+        return qs.filter(start__gte=today)
 
 
 class EventListArchiveView(BaseEventListView):
@@ -52,7 +54,9 @@ class EventListArchiveView(BaseEventListView):
 
     def get_queryset(self):
         qs = super(EventListArchiveView, self).get_queryset()
-        return qs.filter(start__lt=date.today()).order_by('-start')
+        today = datetime.datetime.combine(date=datetime.date.today(), time=datetime.time.min)
+        today = timezone.make_aware(today)
+        return qs.filter(start__lt=today).order_by('-start')
 
 
 class EventListCategoryView(CategoryMixin, EventListView):
