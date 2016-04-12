@@ -2,11 +2,11 @@
 from setuptools import setup, find_packages
 
 setup(
-    name='glitter-events',
+    name='django-glitter-events',
     version='0.1',
     description='Glitter Events for Django',
     long_description=open('README.rst').read(),
-    url='https://github.com/blancltd/glitter-events',
+    url='https://github.com/blancltd/django-glitter-events',
     maintainer='Blanc Ltd',
     maintainer_email='studio@blanc.ltd.uk',
     platforms=['any'],
