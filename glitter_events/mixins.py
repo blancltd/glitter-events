@@ -55,7 +55,6 @@ class CalendarMixin(EventsQuerysetMixin):
         context['previous_month'] = previous_month
         context['next_month'] = next_month
         context['current_month'] = current_month
-        context['total_events'] = self.get_month_total_events_no()
 
         return context
 
@@ -80,14 +79,6 @@ class CalendarMixin(EventsQuerysetMixin):
             month_days[event_date].append(i)
 
         return month_days.items()
-
-    def get_month_total_events_no(self):
-        current_month = self.get_current_month()
-        next_month = self.get_next_month(current_month)
-
-        # QuerySet from mixin
-        qs = self.get_queryset()
-        return qs.filter(start__gte=current_month, start__lte=next_month).count()
 
     def get_calendar_day_names(self):
         calendar_days = []
