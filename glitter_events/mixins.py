@@ -44,24 +44,13 @@ class CalendarMixin(EventsQuerysetMixin):
     def get_context_data(self, **kwargs):
         context = super(CalendarMixin, self).get_context_data(**kwargs)
 
-        now = self.get_time_now()
-        current_month = self.get_current_month()
-        previous_month = self.get_previous_month(current_month)
-        next_month = self.get_next_month(current_month)
-
         context['calendar_headings'] = self.get_calendar_day_names()
-        context['event_list'] = self.get_events_list()
-        context['now_month'] = now
-        context['previous_month'] = previous_month
-        context['next_month'] = next_month
-        context['current_month'] = current_month
+        context['calendar_events'] = self.get_events_list()
 
         return context
 
     def get_events_list(self):
         current_month = self.get_current_month()
-        next_month = self.get_next_month(current_month)
-
         month_days = OrderedDict()
 
         cal = calendar.Calendar(firstweekday=calendar.SUNDAY)
@@ -69,14 +58,9 @@ class CalendarMixin(EventsQuerysetMixin):
             for i in week:
                 month_days[i] = []
 
-        # Get queryset from Mixin
-        qs = self.get_queryset()
-
-        qs = qs.filter(start__gte=current_month, start__lte=next_month)
-
-        for i in qs:
-            event_date = i.start.date()
-            month_days[event_date].append(i)
+        for obj in self.object_list:
+            event_date = obj.start.date()
+            month_days[event_date].append(obj)
 
         return month_days.items()
 
