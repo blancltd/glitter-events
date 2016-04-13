@@ -1,11 +1,18 @@
 #!/usr/bin/env python
-from setuptools import setup, find_packages
+from codecs import open
+
+from setuptools import find_packages, setup
+
+
+with open('README.rst', 'r', 'utf-8') as f:
+    readme = f.read()
+
 
 setup(
     name='django-glitter-events',
     version='0.1',
     description='Glitter Events for Django',
-    long_description=open('README.rst').read(),
+    long_description=readme,
     url='https://github.com/blancltd/django-glitter-events',
     maintainer='Blanc Ltd',
     maintainer_email='studio@blanc.ltd.uk',
