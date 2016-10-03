@@ -1,7 +1,7 @@
 {% load events_tags %}
 
 {% if object.category %}
-    {% get_upcoming_events category=object.category as upcoming_events %}
+    {% get_upcoming_events category=object.category.slug as upcoming_events %}
 {% else %}
     {% get_upcoming_events as upcoming_events %}
 {% endif %}
