@@ -46,7 +46,10 @@ class Event(GlitterMixin):
         ordering = ('start',)
 
     def __str__(self):
-        return self.title
+        out = '{start} - {title}'.format(
+            start=self.start.strftime('%Y-%m-%d - %I:%M%p'), title=self.title
+        )
+        return out
 
     def save(self, *args, **kwargs):
         self.date_url = self.start.date()
