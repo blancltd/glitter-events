@@ -1,13 +1,17 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
+from taggit.managers import TaggableManager
+
+from django.core.urlresolvers import reverse
 from django.db import models
 from django.utils.encoding import python_2_unicode_compatible
-from django.core.urlresolvers import reverse
 
 from glitter.assets.fields import AssetForeignKey
 from glitter.mixins import GlitterMixin
 from glitter.models import BaseBlock
+
+
 
 
 @python_2_unicode_compatible
@@ -42,6 +46,8 @@ class Event(GlitterMixin):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+    tags = TaggableManager(blank=True)
+
     class Meta(GlitterMixin.Meta):
         ordering = ('start',)
 
@@ -66,6 +72,7 @@ class Event(GlitterMixin):
 
 class UpcomingEventsBlock(BaseBlock):
     category = models.ForeignKey('glitter_events.Category', null=True, blank=True)
+    tags = models.CharField(max_length=255, blank=True)
 
     class Meta:
         verbose_name = 'upcoming events'
