@@ -9,6 +9,8 @@ from glitter.assets.fields import AssetForeignKey
 from glitter.mixins import GlitterMixin
 from glitter.models import BaseBlock
 
+from taggit.managers import TaggableManager
+
 
 @python_2_unicode_compatible
 class Category(models.Model):
@@ -42,6 +44,8 @@ class Event(GlitterMixin):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+    tags = TaggableManager(blank=True)
+
     class Meta(GlitterMixin.Meta):
         ordering = ('start',)
 
@@ -66,6 +70,7 @@ class Event(GlitterMixin):
 
 class UpcomingEventsBlock(BaseBlock):
     category = models.ForeignKey('glitter_events.Category', null=True, blank=True)
+    tags = models.CharField(max_length=255, blank=True)
 
     class Meta:
         verbose_name = 'upcoming events'
