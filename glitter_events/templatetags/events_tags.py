@@ -1,7 +1,7 @@
+from taggit import utils
+
 from django import template
 from django.utils import timezone
-
-from taggit import utils
 
 from ..models import Event
 

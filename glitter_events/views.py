@@ -6,7 +6,6 @@ from django.shortcuts import get_object_or_404
 from django.utils import timezone
 from django.views.generic import ListView
 from django.views.generic.dates import DateDetailView, MonthArchiveView
-
 from glitter.mixins import GlitterDetailMixin
 
 from .mixins import CalendarMixin, CategoryMixin, EventsMixin, EventsQuerysetMixin
