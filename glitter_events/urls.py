@@ -67,7 +67,7 @@ events_urlpatterns = [
 if glitter_events.USE_LOCATIONS:
     events_urlpatterns.append(
         url(
-            r'^location/(?P<location>[-\w]+)/archive/$',
+            r'^location/(?P<slug>[-\w]+)/archive/$',
             views.EventListLocationArchiveView.as_view(),
             name='location-event-list'
         ),
@@ -81,7 +81,7 @@ if glitter_events.USE_LOCATIONS:
     # Regardless of which pattern is chosen if we use locations, append this.
     urlpatterns.append(
         url(
-            r'^location/(?P<location>[-\w]+)/$',
+            r'^location/(?P<slug>[-\w]+)/$',
             views.EventListLocationView.as_view(),
             name='location-event-list'
         ),    

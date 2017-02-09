@@ -81,7 +81,7 @@ class EventListLocationView(LocationMixin, EventListView):
 
     def get_queryset(self):
         qs = super(EventListLocationView, self).get_queryset()
-        self.location = get_object_or_404(Location, title=self.kwargs['location'])
+        self.location = get_object_or_404(Location, slug=self.kwargs['slug'])
         return qs.filter(locations=self.location)
 
 
@@ -90,5 +90,5 @@ class EventListLocationArchiveView(LocationMixin, EventListArchiveView):
 
     def get_queryset(self):
         qs = super(EventListLocationArchiveView, self).get_queryset()
-        self.location = get_object_or_404(Location, title=self.kwargs['location'])
+        self.location = get_object_or_404(Location, slug=self.kwargs['slug'])
         return qs.filter(locations=self.location)
