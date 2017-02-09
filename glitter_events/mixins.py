@@ -15,7 +15,7 @@ class EventsMixin(object):
         context['events_categories'] = True
         context['categories'] = glitter_events.models.Category.objects.all()
         
-        context['location_categories'] = glitter_events.USE_LOCATIONS
+        context['events_locations'] = glitter_events.USE_LOCATIONS
         context['locations'] = []
         if  glitter_events.USE_LOCATIONS:
             context['locations'] = glitter_events.models.Location.objects.all()

@@ -2,7 +2,6 @@
 from __future__ import unicode_literals
 
 from django.db import migrations, models
-from django.utils.text import slugify
 
 
 def shorten(text):
@@ -51,15 +50,12 @@ def migrate(apps, schema_editor):
         except Location.DoesNotExist:
             while Location.objects.using(dbi).filter(title=title).exists():
                 title = shorten(revision(title))
-            
-            kwargs = {
-                'title': title,
-                'slug': slugify(location)[:32],
-                'location': location
-            }
-            reference = Location.objects.using(dbi).create(**kwargs)
+                
+            reference = Location.objects.using(dbi).create(title=title,
+                                                           location=location)
 
         event.locations.add(reference)
+
 
 class Migration(migrations.Migration):
 
@@ -71,10 +67,9 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Location',
             fields=[
-                ('id', models.AutoField(verbose_name='ID', auto_created=True, serialize=False, primary_key=True)),
+                ('id', models.AutoField(primary_key=True, auto_created=True, serialize=False, verbose_name='ID')),
                 ('title', models.CharField(max_length=32, db_index=True)),
-                ('slug', models.SlugField(max_length=32, unique=True)),
-                ('location', models.CharField(max_length=100, unique=True)),
+                ('location', models.CharField(unique=True, max_length=100)),
             ],
             options={
                 'ordering': ('title',),
