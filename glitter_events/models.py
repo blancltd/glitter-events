@@ -33,11 +33,28 @@ class Category(models.Model):
 
 
 @python_2_unicode_compatible
+class Location(models.Model):
+    title = models.CharField(max_length=32, db_index=True)
+    location = models.CharField(max_length=100, unique=True)
+
+    class Meta:
+        ordering = ('title',)
+
+    def __str__(self):
+        return self.title
+
+    def get_absolute_url(self):
+        return reverse('glitter-events:location-event-list', kwargs={
+            'title': self.title,
+        })
+
+
+@python_2_unicode_compatible
 class Event(GlitterMixin):
     category = models.ForeignKey('glitter_events.Category')
     title = models.CharField(max_length=100, db_index=True)
     slug = models.SlugField(max_length=100, unique_for_date='start')
-    location = models.CharField(max_length=128, blank=True)
+    locations = models.ManyToManyField(Location, blank=True)
     image = AssetForeignKey('glitter_assets.Image', null=True, blank=True)
     summary = models.TextField(help_text='A short sentence description of the event.')
     start = models.DateTimeField(help_text='Start time/date.')
