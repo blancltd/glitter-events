@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from django.conf.urls import url
+import glitter_events
 
 from . import views
 
@@ -24,7 +25,6 @@ calendar_urlpatterns = [
         views.EventListCategoryView.as_view(),
         name='category-event-list'
     ),
-
     # Detail view
     url(
         r'^(?P<year>[0-9]{4})/(?P<month>[0-9]+)/(?P<day>[0-9]+)/(?P<slug>[-\w]+)/$',
@@ -32,6 +32,7 @@ calendar_urlpatterns = [
         name='detail'
     ),
 ]
+
 
 events_urlpatterns = [
     # List views
@@ -55,7 +56,6 @@ events_urlpatterns = [
         views.EventListCategoryArchiveView.as_view(),
         name='category-event-list-archive'
     ),
-
     # Detail view
     url(
         r'^(?P<year>[0-9]{4})/(?P<month>[0-9]+)/(?P<day>[0-9]+)/(?P<slug>[-\w]+)/$',
@@ -64,5 +64,25 @@ events_urlpatterns = [
     ),
 ]
 
+if glitter_events.USE_LOCATIONS:
+    events_urlpatterns.append(
+        url(
+            r'^location/(?P<location>[-\w]+)/archive/$',
+            views.EventListLocationArchiveView.as_view(),
+            name='location-event-list'
+        ),
+    )
+
+
 # Default to calendar urlpatterns
 urlpatterns = calendar_urlpatterns
+
+if glitter_events.USE_LOCATIONS:
+    # Regardless of which pattern is chosen if we use locations, append this.
+    urlpatterns.append(
+        url(
+            r'^location/(?P<location>[-\w]+)/$',
+            views.EventListLocationView.as_view(),
+            name='location-event-list'
+        ),    
+    )
