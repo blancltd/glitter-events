@@ -25,6 +25,10 @@ class EventDetailView(GlitterDetailMixin, EventsMixin, DateDetailView):
 
 
 class CalendarCurrentMonthView(CalendarMixin, EventsMixin, MonthArchiveView):
+    def get_queryset(self):
+        qs = super(CalendarCurrentMonthView, self).get_queryset()
+        return qs.order_by('start')
+
     def get_year(self):
         return str(timezone.now().year)
 
