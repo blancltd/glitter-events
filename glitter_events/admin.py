@@ -5,7 +5,7 @@ from django.contrib import admin
 from glitter import block_admin
 from glitter.admin import GlitterAdminMixin
 
-from .models import Category, Event, UpcomingEventsBlock
+from .models import Location, Category, Event, UpcomingEventsBlock
 
 
 @admin.register(Category)
@@ -16,12 +16,19 @@ class CategoryAdmin(admin.ModelAdmin):
     }
 
 
+@admin.register(Location)
+class LocationAdmin(admin.ModelAdmin):
+    search_fields = ('title', 'location')
+    list_display = search_fields
+
+
 @admin.register(Event)
 class EventAdmin(GlitterAdminMixin, admin.ModelAdmin):
     fieldsets = (
         ('Event', {
             'fields': (
-                'title', 'category', 'location', 'image', 'summary', 'start', 'end', 'tags',
+                'title', 'category', 'locations', 'address',
+                'image','summary', 'start', 'end','tags',
             )
         }),
         ('Advanced options', {

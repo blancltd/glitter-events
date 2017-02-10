@@ -8,8 +8,8 @@ from django.views.generic import ListView
 from django.views.generic.dates import DateDetailView, MonthArchiveView
 from glitter.mixins import GlitterDetailMixin
 
-from .mixins import CalendarMixin, CategoryMixin, EventsMixin, EventsQuerysetMixin
-from .models import Category, Event
+from .mixins import CalendarMixin, CategoryMixin, EventsMixin, EventsQuerysetMixin, LocationMixin
+from .models import Category, Event, Location
 
 
 class EventDetailView(GlitterDetailMixin, EventsMixin, DateDetailView):
@@ -25,6 +25,10 @@ class EventDetailView(GlitterDetailMixin, EventsMixin, DateDetailView):
 
 
 class CalendarCurrentMonthView(CalendarMixin, EventsMixin, MonthArchiveView):
+    def get_queryset(self):
+        qs = super(CalendarCurrentMonthView, self).get_queryset()
+        return qs.order_by('start')
+
     def get_year(self):
         return str(timezone.now().year)
 
@@ -74,3 +78,21 @@ class EventListCategoryArchiveView(CategoryMixin, EventListArchiveView):
         qs = super(EventListCategoryArchiveView, self).get_queryset()
         self.category = get_object_or_404(Category, slug=self.kwargs['slug'])
         return qs.filter(category=self.category)
+
+
+class EventListLocationView(LocationMixin, EventListView):
+    template_name_suffix = '_list_location'
+
+    def get_queryset(self):
+        qs = super(EventListLocationView, self).get_queryset()
+        self.location = get_object_or_404(Location, slug=self.kwargs['slug'])
+        return qs.filter(locations=self.location)
+
+
+class EventListLocationArchiveView(LocationMixin, EventListArchiveView):
+    template_name_suffix = '_list_location_archive'
+
+    def get_queryset(self):
+        qs = super(EventListLocationArchiveView, self).get_queryset()
+        self.location = get_object_or_404(Location, slug=self.kwargs['slug'])
+        return qs.filter(locations=self.location)

@@ -2,18 +2,24 @@
 
 import calendar
 import datetime
+import glitter_events
+
 from collections import OrderedDict
 
 from django.utils import timezone
-
-from .models import Category, Event
-
+    
 
 class EventsMixin(object):
     def get_context_data(self, **kwargs):
         context = super(EventsMixin, self).get_context_data(**kwargs)
         context['events_categories'] = True
-        context['categories'] = Category.objects.all()
+        context['categories'] = glitter_events.models.Category.objects.all()
+        
+        context['events_locations'] = glitter_events.USE_LOCATIONS
+        context['locations'] = []
+        if  glitter_events.USE_LOCATIONS:
+            context['locations'] = glitter_events.models.Location.objects.all()
+        
         return context
 
 
@@ -24,9 +30,16 @@ class CategoryMixin(object):
         return context
 
 
+class LocationMixin(object):
+    def get_context_data(self, **kwargs):
+        context = super(LocationMixin, self).get_context_data(**kwargs)
+        context['current_location'] = self.location
+        return context
+
+
 class EventsQuerysetMixin(object):
-    model = Event
-    queryset = Event.objects.published()
+    model = glitter_events.models.Event
+    queryset = glitter_events.models.Event.objects.published()
 
 
 class CalendarMixin(EventsQuerysetMixin):
