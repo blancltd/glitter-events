@@ -27,7 +27,8 @@ class EventAdmin(GlitterAdminMixin, admin.ModelAdmin):
     fieldsets = (
         ('Event', {
             'fields': (
-                'title', 'category', 'locations', 'image', 'summary', 'start', 'end', 'tags',
+                'title', 'category', 'locations', 'address',
+                'image','summary', 'start', 'end','tags',
             )
         }),
         ('Advanced options', {
