@@ -6,7 +6,6 @@ from taggit.managers import TaggableManager
 from django.core.urlresolvers import reverse
 from django.db import models
 from django.utils.encoding import python_2_unicode_compatible
-from django.utils.http import urlquote
 
 from glitter.assets.fields import AssetForeignKey
 from glitter.mixins import GlitterMixin
