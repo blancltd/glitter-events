@@ -36,7 +36,7 @@ class EventAdmin(GlitterAdminMixin, admin.ModelAdmin):
         }),
     )
     date_hierarchy = 'start'
-    list_display = ('title', 'start', 'end', 'category',)
+    list_display = ('title', 'start', 'end', 'category', 'is_published')
     list_filter = ('published', 'start', 'category',)
     prepopulated_fields = {
         'slug': ('title',)
