@@ -2,6 +2,7 @@
 from __future__ import unicode_literals
 
 from django.db import models, migrations
+import django.db.models.deletion
 import glitter.assets.fields
 
 
@@ -53,7 +54,7 @@ class Migration(migrations.Migration):
             name='UpcomingEventsBlock',
             fields=[
                 ('id', models.AutoField(serialize=False, primary_key=True, auto_created=True, verbose_name='ID')),
-                ('category', models.ForeignKey(blank=True, to='glitter_events.Category', null=True)),
+                ('category', models.ForeignKey(blank=True, to='glitter_events.Category', null=True, on_delete=django.db.models.deletion.PROTECT)),
                 ('content_block', models.ForeignKey(to='glitter.ContentBlock', editable=False, null=True)),
             ],
             options={

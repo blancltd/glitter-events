@@ -12,8 +12,6 @@ from glitter.mixins import GlitterMixin
 from glitter.models import BaseBlock
 
 
-
-
 @python_2_unicode_compatible
 class Category(models.Model):
     title = models.CharField(max_length=100, db_index=True)
@@ -37,13 +35,13 @@ class Location(models.Model):
     title = models.CharField(max_length=32, db_index=True)
     slug = models.SlugField(max_length=32, unique=True)
     location = models.CharField(max_length=128, unique=True)
- 
+
     class Meta:
         ordering = ('title',)
- 
+
     def __str__(self):
         return self.title
- 
+
     def get_absolute_url(self):
         return reverse('glitter-events:location-event-list', kwargs={
             'slug': self.slug,
@@ -90,7 +88,9 @@ class Event(GlitterMixin):
 
 
 class UpcomingEventsBlock(BaseBlock):
-    category = models.ForeignKey('glitter_events.Category', null=True, blank=True)
+    category = models.ForeignKey(
+        'glitter_events.Category', null=True, blank=True, on_delete=models.PROTECT
+    )
     tags = models.CharField(max_length=255, blank=True)
 
     class Meta:
