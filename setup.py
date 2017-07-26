@@ -10,7 +10,7 @@ with open('README.rst', 'r', 'utf-8') as f:
 
 setup(
     name='django-glitter-events',
-    version='0.1.4',
+    version='0.1.5',
     description='Glitter Events for Django',
     long_description=readme,
     url='https://github.com/blancltd/django-glitter-events',
