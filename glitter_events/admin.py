@@ -3,7 +3,7 @@
 from django.contrib import admin
 
 from glitter import block_admin
-from glitter.admin import GlitterAdminMixin
+from glitter.admin import GlitterAdminMixin, GlitterPagePublishedFilter
 
 from .models import Location, Category, Event, UpcomingEventsBlock
 
@@ -37,7 +37,7 @@ class EventAdmin(GlitterAdminMixin, admin.ModelAdmin):
     )
     date_hierarchy = 'start'
     list_display = ('title', 'start', 'end', 'category', 'is_published')
-    list_filter = ('published', 'start', 'category',)
+    list_filter = (GlitterPagePublishedFilter, 'start', 'category',)
     prepopulated_fields = {
         'slug': ('title',)
     }
