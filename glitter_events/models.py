@@ -5,6 +5,7 @@ from taggit.managers import TaggableManager
 
 from django.core.urlresolvers import reverse
 from django.db import models
+from django.utils import timezone
 from django.utils.encoding import python_2_unicode_compatible
 
 from glitter.assets.fields import AssetForeignKey
@@ -70,7 +71,7 @@ class Event(GlitterMixin):
 
     def __str__(self):
         out = '{start} - {title}'.format(
-            start=self.start.strftime('%Y-%m-%d - %I:%M%p'), title=self.title
+            start=timezone.localtime(self.start).strftime('%Y-%m-%d - %I:%M%p'), title=self.title
         )
         return out
 

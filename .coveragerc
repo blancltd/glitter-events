@@ -1,0 +1,7 @@
+[run]
+branch = true
+parallel = true
+omit =
+    .tox/*
+    glitter_events/migrations/*
+    tests/*
