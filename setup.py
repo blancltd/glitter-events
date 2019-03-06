@@ -13,7 +13,7 @@ setup(
     version='0.1.7',
     description='Glitter Events for Django',
     long_description=readme,
-    maintainer='Developer Society',
+    maintainer='The Developer Society',
     url='https://github.com/developersociety/django-glitter-events',
     maintainer_email='studio@dev.ngo',
     platforms=['any'],
