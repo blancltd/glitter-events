@@ -69,15 +69,6 @@ class EventListCategoryView(CategoryMixin, EventListView):
     template_name_suffix = '_list_category'
 
     def get_queryset(self):
-        qs = super(EventListCategoryView, self).get_queryset()
-        self.category = get_object_or_404(Category, slug=self.kwargs['slug'])
-        return qs.filter(category=self.category)
-
-
-class EventListCategoryArchiveView(CategoryMixin, EventListArchiveView):
-    template_name_suffix = '_list_category_archive'
-
-    def get_queryset(self):
         """
         Categories such as 'all events' should return all categories, not just
         the events with category__title='all_events'. The name of this type of
@@ -92,6 +83,15 @@ class EventListCategoryArchiveView(CategoryMixin, EventListArchiveView):
         if hasattr(settings, 'ALL_EVENTS_CATEGORY_TITLE'):
             if self.category.title == settings.ALL_EVENTS_CATEGORY_TITLE:
                 return qs
+        return qs.filter(category=self.category)
+
+
+class EventListCategoryArchiveView(CategoryMixin, EventListArchiveView):
+    template_name_suffix = '_list_category_archive'
+
+    def get_queryset(self):
+        qs = super(EventListCategoryArchiveView, self).get_queryset()
+        self.category = get_object_or_404(Category, slug=self.kwargs['slug'])
         return qs.filter(category=self.category)
 
 
