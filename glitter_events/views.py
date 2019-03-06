@@ -78,7 +78,7 @@ class EventListCategoryView(CategoryMixin, EventListView):
         the site, all events will be returned, otherwise, the category filter
         will be applied as normal.
         """
-        qs = super(EventListCategoryArchiveView, self).get_queryset()
+        qs = super(EventListCategoryView, self).get_queryset()
         self.category = get_object_or_404(Category, slug=self.kwargs['slug'])
         if hasattr(settings, 'ALL_EVENTS_CATEGORY_TITLE'):
             if self.category.title == settings.ALL_EVENTS_CATEGORY_TITLE:
