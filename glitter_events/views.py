@@ -2,6 +2,7 @@
 
 import datetime
 
+from django.conf import settings
 from django.shortcuts import get_object_or_404
 from django.utils import timezone
 from django.views.generic import ListView
@@ -77,8 +78,20 @@ class EventListCategoryArchiveView(CategoryMixin, EventListArchiveView):
     template_name_suffix = '_list_category_archive'
 
     def get_queryset(self):
+        """
+        Categories such as 'all events' should return all categories, not just
+        the events with category__title='all_events'. The name of this type of
+        category could change for each separate site so a settings variable has
+        been introduced so it can be set on a per-site basis.
+        If the title of the given category matches the ALL_CATEGORIES_TITLE for
+        the site, all events will be returned, otherwise, the category filter
+        will be applied as normal.
+        """
         qs = super(EventListCategoryArchiveView, self).get_queryset()
         self.category = get_object_or_404(Category, slug=self.kwargs['slug'])
+        if hasattr(settings, 'ALL_CATEGORIES_TITLE'):
+            if self.category.title == settings.ALL_CATEGORIES_TITLE:
+                return qs
         return qs.filter(category=self.category)
 
 
